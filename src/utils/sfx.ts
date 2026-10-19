@@ -1,4 +1,4 @@
-// Web Audio API synthesised sounds — no binary assets needed
+// Web Audio API synthesised sounds - no binary assets needed
 let ctx: AudioContext | null = null
 
 function getCtx(): AudioContext {

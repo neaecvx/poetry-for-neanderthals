@@ -10,7 +10,7 @@ export default function TurnIntro() {
   return (
     <div className="screen">
       <h1 className="screen-title">Pass to {team.name}</h1>
-      <p className="subtitle">Pick your Poet and Judge. Press Start when ready.</p>
+      <p className="subtitle">Pick your Poet. Press Start when ready.</p>
       <p className="subtitle" style={{ color: 'var(--accent-fire)', fontWeight: 700 }}>
         Describe using only ONE-syllable words!
       </p>

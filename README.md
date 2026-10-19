@@ -1,14 +1,14 @@
 # Abugabuga
 
-A pass-and-play party game by **NeonDev Code Studio**. Describe the word (1 pt), then the phrase that contains it (3 pts) — using only one-syllable clues. Bonk your teammates for speaking like a poet.
+A pass-and-play party game by **NeonDev Code Studio**. Describe the word (1 pt), then the phrase that contains it (3 pts) - using only one-syllable clues. Break the rule and the other team hits you with the NO! Stick.
 
 Built with React + TypeScript + Vite + Zustand. Dark cave theme, 90s turn timer (configurable), Web Audio sound effects, and a 1040-card deck with no-repeat play.
 
 ## Rules
 
 - Two teams, each turn one player is the **Poet**, the rest are the **Team**
-- The Poet describes the **easy word** (1 pt), then may push for the **hard phrase** (3 pts total — it contains the word)
-- Clues must use only one-syllable words. Say the answer word itself, a multi-syllable clue, or any other language? **BONK** — team loses 1 pt
+- The Poet describes the **easy word** (1 pt), then may push for the **hard phrase** (3 pts total - it contains the word)
+- Clues must use only one-syllable words. Say the answer word itself, a multi-syllable clue, or any other language? **NO!** - team loses 1 pt
 - Skipping a card costs 1 pt. Timer runs out? Turn over
 - Equal turns per team; highest score wins
 
@@ -31,7 +31,7 @@ npm run dev
 
 ## Cards
 
-Cards live in `src/data/` (`blue.json` = easy, `red.json` = hard, `green.json` = festive bonus — always mixed in). Each card:
+Cards live in `src/data/` (`blue.json` = easy, `red.json` = hard, `green.json` = festive bonus - always mixed in). Each card:
 
 ```json
 {
@@ -44,7 +44,7 @@ Cards live in `src/data/` (`blue.json` = easy, `red.json` = hard, `green.json` =
 }
 ```
 
-Rules (enforced by `npm run validate`): `easy` is a single dictionary word; `hard` contains `easy` and has more syllables (max 7); easy words are unique across all decks. Cards are bundled at build time — no runtime API or database.
+Rules (enforced by `npm run validate`): `easy` is a single dictionary word; `hard` contains `easy` and has more syllables (max 7); easy words are unique across all decks. Cards are bundled at build time - no runtime API or database.
 
 ## Deploy
 

@@ -72,7 +72,7 @@ export default function GameScreen() {
           ⏭ Skip (−1)
         </button>
         <button style={bonkBtnStyle} onClick={doBonk}>
-          🔨 BONK! (−1)
+          🦴 NO! (−1)
         </button>
       </div>
       <Timer />
