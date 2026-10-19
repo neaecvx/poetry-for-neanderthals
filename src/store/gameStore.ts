@@ -158,18 +158,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
   bank1: () => {
     playYes()
-    const { poetCards, currentCardIndex } = get()
+    const { poetCards, currentCardIndex, teams, currentTeamIndex } = get()
     const copy = [...poetCards]
+    const t = [...teams] as [Team, Team]
     copy[currentCardIndex] = { ...copy[currentCardIndex], status: 'banked1' }
-    set({ poetCards: copy })
+    t[currentTeamIndex] = { ...t[currentTeamIndex], score: t[currentTeamIndex].score + 1 }
+    set({ poetCards: copy, teams: t as [Team, Team] })
     get().drawNext()
   },
   bank3: () => {
     playYes()
-    const { poetCards, currentCardIndex } = get()
+    const { poetCards, currentCardIndex, teams, currentTeamIndex } = get()
     const copy = [...poetCards]
+    const t = [...teams] as [Team, Team]
     copy[currentCardIndex] = { ...copy[currentCardIndex], status: 'banked3' }
-    set({ poetCards: copy })
+    t[currentTeamIndex] = { ...t[currentTeamIndex], score: t[currentTeamIndex].score + 3 }
+    set({ poetCards: copy, teams: t as [Team, Team] })
     get().drawNext()
   },
   skip: () => {
@@ -193,15 +197,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     get().drawNext()
   },
   endTurn: () => {
-    const { poetCards, teams, currentTeamIndex } = get()
-    const earned = poetCards.reduce((sum, c) => {
-      if (c.status === 'banked3') return sum + 3
-      if (c.status === 'banked1') return sum + 1
-      return sum
-    }, 0)
-    const t = [...teams] as [Team, Team]
-    t[currentTeamIndex] = { ...t[currentTeamIndex], score: t[currentTeamIndex].score + earned }
-    set({ timerRunning: false, phase: 'TURN_SUMMARY', teams: t })
+    set({ timerRunning: false, phase: 'TURN_SUMMARY' })
   },
   nextTurn: () => {
     const { currentTeamIndex, turnsTaken, turnsPerTeam } = get()

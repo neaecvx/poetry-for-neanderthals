@@ -7,7 +7,7 @@ export function Card({ card }: { card: PoetCard }) {
       <div style={easyStyle}>{card.easy}</div>
       <div style={{ margin: '1rem 0', opacity: 0.4 }}>then</div>
       <div style={{ opacity: 0.6, fontSize: 'clamp(0.9rem,2vw,1.1rem)' }}>
-        Hard (3 pts total — contains the word)
+        Hard (3 pts)
       </div>
       <div style={hardStyle}>{card.hard}</div>
     </div>

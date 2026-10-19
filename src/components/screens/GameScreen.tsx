@@ -61,16 +61,6 @@ export default function GameScreen() {
           </div>
         ))}
       </div>
-      <Timer />
-      <Card key={card.id} card={card} />
-      {settledCards.length > 0 && (
-        <div style={{ width: 'min(600px,90vw)' }}>
-          <div style={{ fontSize: '0.9rem', opacity: 0.6, marginBottom: '0.5rem' }}>
-            This turn's slate
-          </div>
-          <ScoreSlate cards={settledCards} />
-        </div>
-      )}
       <div style={{ display: 'flex', gap: 'clamp(0.5rem,2vw,1rem)', flexWrap: 'wrap', justifyContent: 'center' }}>
         <button style={btnStyle} onClick={bank1}>
           ✓ 1 point
@@ -85,6 +75,16 @@ export default function GameScreen() {
           🔨 BONK! (−1)
         </button>
       </div>
+      <Timer />
+      <Card key={card.id} card={card} />
+      {settledCards.length > 0 && (
+        <div style={{ width: 'min(600px,90vw)' }}>
+          <div style={{ fontSize: '0.9rem', opacity: 0.6, marginBottom: '0.5rem' }}>
+            This turn's slate
+          </div>
+          <ScoreSlate cards={settledCards} />
+        </div>
+      )}
       <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center' }}>
         <button style={endStyle} onClick={endTurn}>
           End turn early
