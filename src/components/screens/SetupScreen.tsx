@@ -11,7 +11,7 @@ export default function SetupScreen() {
 
   return (
     <div className="screen">
-      <h1 className="screen-title">Poetry for Neanderthals</h1>
+      <img className="app-banner" src="app-banner.png" alt="Abugabuga" />
       <p className="subtitle">Use one-syllable clues only</p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', minWidth: 'min(400px,90vw)' }}>
         <input

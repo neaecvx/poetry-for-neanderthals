@@ -1,5 +1,5 @@
 :root {
-  /* Poetry for Neanderthals - Dark Cave Theme */
+  /* Abugabuga - Dark Cave Theme */
   --bg-primary: #0b0f0b;
   --bg-secondary: #1a2021;
   --bg-cave: radial-gradient(ellipse at top, #1f2a21 0%, #0b0f0b 70%);
@@ -95,6 +95,12 @@ button:disabled {
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   color: var(--text-secondary);
   max-width: 60ch;
+}
+
+.app-banner {
+  width: min(100%, 720px);
+  height: auto;
+  display: block;
 }
 
 @keyframes bonkFlash {

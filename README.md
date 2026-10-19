@@ -1,4 +1,4 @@
-# Poetry for Neanderthals
+# Abugabuga
 
 A pass-and-play party game by **NeonDev Code Studio**. Describe the word (1 pt), then the phrase that contains it (3 pts) — using only one-syllable clues. Bonk your teammates for speaking like a poet.
 
