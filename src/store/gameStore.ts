@@ -67,7 +67,7 @@ function buildDeck(deckSide: 'blue' | 'red' | 'mixed'): Card[] {
 }
 
 export const useGameStore = create<GameStore>((set, get) => ({
-  phase: 'SETUP',
+  phase: 'SPLASH',
   teams: [
     { name: 'Team Glad', score: 0, poetIndex: 0 },
     { name: 'Team Mad', score: 0, poetIndex: 0 },
@@ -251,7 +251,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   rematch: () => {
     const deck = buildDeck(get().deckSide)
     set({
-  phase: 'SPLASH',
+      phase: 'SETUP',
       teams: [
         { name: get().teams[0].name, score: 0, poetIndex: 0 },
         { name: get().teams[1].name, score: 0, poetIndex: 0 },
