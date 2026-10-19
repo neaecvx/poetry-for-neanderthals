@@ -43,6 +43,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: 1rem;
+  background: var(--bg-cave);
 }
 
 button {
@@ -136,7 +137,7 @@ button:disabled {
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
-  color: #9aa0a6;
+  color: #6b7280;
   font-size: 0.85rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;

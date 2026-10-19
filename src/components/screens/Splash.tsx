@@ -5,11 +5,9 @@ export default function Splash() {
   const dismissSplash = useGameStore((s) => s.dismissSplash)
 
   useEffect(() => {
-    document.body.style.background = '#ffffff'
-    return () => {
-      document.body.style.background = ''
-    }
-  }, [])
+    const t = setTimeout(dismissSplash, 2600)
+    return () => clearTimeout(t)
+  }, [dismissSplash])
 
   return (
     <div
@@ -27,7 +25,6 @@ export default function Splash() {
         alt="NeonDev Code Studio"
         className="splash-img"
         draggable={false}
-        onAnimationEnd={dismissSplash}
       />
       <span className="splash-skip">tap to skip</span>
     </div>
