@@ -15,7 +15,7 @@ export interface Team {
 }
 
 export interface PoetCard extends Card {
-  status: 'active' | 'banked1' | 'banked3' | 'skipped' | 'bonked' | 'pushfail'
+  status: 'active' | 'banked1' | 'banked3' | 'skipped' | 'bonked'
 }
 
 export interface GameStore {
@@ -44,8 +44,6 @@ export interface GameStore {
   drawNext: () => void
   bank1: () => void
   bank3: () => void
-  finishCard: () => void
-  resumePush: () => void
   skip: () => void
   bonk: () => void
   endTurn: () => void
@@ -164,7 +162,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const copy = [...poetCards]
     copy[currentCardIndex] = { ...copy[currentCardIndex], status: 'banked1' }
     set({ poetCards: copy })
-    // push-your-luck: card stays current; poet chooses finishCard or resumePush
+    get().drawNext()
   },
   bank3: () => {
     playYes()
@@ -174,26 +172,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ poetCards: copy })
     get().drawNext()
   },
-  finishCard: () => {
-    get().drawNext()
-  },
-  resumePush: () => {
-    const { poetCards, currentCardIndex } = get()
-    const copy = [...poetCards]
-    copy[currentCardIndex] = { ...copy[currentCardIndex], status: 'active' }
-    set({ poetCards: copy })
-  },
   skip: () => {
     playBonk()
     const { poetCards, currentCardIndex, teams, currentTeamIndex } = get()
     const copy = [...poetCards]
     const t = [...teams] as [Team, Team]
-    // if already banked1, keep the banked point (push failed) but still -1
-    if (copy[currentCardIndex].status === 'banked1') {
-      copy[currentCardIndex] = { ...copy[currentCardIndex], status: 'pushfail' }
-    } else {
-      copy[currentCardIndex] = { ...copy[currentCardIndex], status: 'skipped' }
-    }
+    copy[currentCardIndex] = { ...copy[currentCardIndex], status: 'skipped' }
     t[currentTeamIndex] = { ...t[currentTeamIndex], score: t[currentTeamIndex].score - 1 }
     set({ poetCards: copy, teams: t as [Team, Team] })
     get().drawNext()
@@ -203,12 +187,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const { poetCards, currentCardIndex, teams, currentTeamIndex } = get()
     const copy = [...poetCards]
     const t = [...teams] as [Team, Team]
-    // if already banked1, keep the banked point (push failed) but still -1
-    if (copy[currentCardIndex].status === 'banked1') {
-      copy[currentCardIndex] = { ...copy[currentCardIndex], status: 'pushfail' }
-    } else {
-      copy[currentCardIndex] = { ...copy[currentCardIndex], status: 'bonked' }
-    }
+    copy[currentCardIndex] = { ...copy[currentCardIndex], status: 'bonked' }
     t[currentTeamIndex] = { ...t[currentTeamIndex], score: t[currentTeamIndex].score - 1 }
     set({ poetCards: copy, teams: t as [Team, Team] })
     get().drawNext()
@@ -217,7 +196,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const { poetCards, teams, currentTeamIndex } = get()
     const earned = poetCards.reduce((sum, c) => {
       if (c.status === 'banked3') return sum + 3
-      if (c.status === 'banked1' || c.status === 'pushfail') return sum + 1
+      if (c.status === 'banked1') return sum + 1
       return sum
     }, 0)
     const t = [...teams] as [Team, Team]

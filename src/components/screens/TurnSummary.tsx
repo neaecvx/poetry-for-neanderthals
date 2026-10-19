@@ -10,20 +10,19 @@ export default function TurnSummary() {
   const team = teams[currentTeamIndex]
   const earned = poetCards.reduce((sum, c) => {
     if (c.status === 'banked3') return sum + 3
-    if (c.status === 'banked1' || c.status === 'pushfail') return sum + 1
+    if (c.status === 'banked1') return sum + 1
     return sum
   }, 0)
   const penalties = poetCards.filter(
-    (c) => c.status === 'skipped' || c.status === 'bonked' || c.status === 'pushfail'
+    (c) => c.status === 'skipped' || c.status === 'bonked'
   ).length
   const net = earned - penalties
 
   const statusLabel: Record<string, string> = {
     banked1: '+1 banked',
     banked3: '+3 banked',
-    skipped: 'skipped (−1)',
-    bonked: 'bonked (−1)',
-    pushfail: '+1 banked, push failed (−1)',
+    skipped: '−1',
+    bonked: '−1',
   }
 
   return (

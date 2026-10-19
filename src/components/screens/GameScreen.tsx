@@ -13,8 +13,6 @@ export default function GameScreen() {
   const currentCardIndex = useGameStore((s) => s.currentCardIndex)
   const bank1 = useGameStore((s) => s.bank1)
   const bank3 = useGameStore((s) => s.bank3)
-  const finishCard = useGameStore((s) => s.finishCard)
-  const resumePush = useGameStore((s) => s.resumePush)
   const skip = useGameStore((s) => s.skip)
   const bonk = useGameStore((s) => s.bonk)
   const endTurn = useGameStore((s) => s.endTurn)
@@ -41,7 +39,6 @@ export default function GameScreen() {
     bonk()
   }
 
-  const banked1 = card.status === 'banked1'
   const settledCards = poetCards.filter((c, i) => c.status !== 'active' && i !== currentCardIndex)
 
   return (
@@ -66,11 +63,6 @@ export default function GameScreen() {
       </div>
       <Timer />
       <Card key={card.id} card={card} />
-      {banked1 && (
-        <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--accent-green)' }}>
-          1 point banked! Keep describing the same card for 3, or move on.
-        </div>
-      )}
       {settledCards.length > 0 && (
         <div style={{ width: 'min(600px,90vw)' }}>
           <div style={{ fontSize: '0.9rem', opacity: 0.6, marginBottom: '0.5rem' }}>
@@ -80,25 +72,12 @@ export default function GameScreen() {
         </div>
       )}
       <div style={{ display: 'flex', gap: 'clamp(0.5rem,2vw,1rem)', flexWrap: 'wrap', justifyContent: 'center' }}>
-        {banked1 ? (
-          <>
-            <button style={btnStyle} onClick={finishCard}>
-              ✓ Keep 1 point & next card
-            </button>
-            <button style={{ ...btnStyle, borderColor: 'var(--accent-fire)' }} onClick={resumePush}>
-              🔥 Keep pushing for 3
-            </button>
-          </>
-        ) : (
-          <>
-            <button style={btnStyle} onClick={bank1}>
-              ✓ Guessed 1-pt
-            </button>
-            <button style={btnStyle} onClick={bank3}>
-              ✓ Guessed 3-pt
-            </button>
-          </>
-        )}
+        <button style={btnStyle} onClick={bank1}>
+          ✓ 1 point
+        </button>
+        <button style={btnStyle} onClick={bank3}>
+          ✓ 3 points
+        </button>
         <button style={{ ...btnStyle, borderColor: 'var(--accent-red)' }} onClick={skip}>
           ⏭ Skip (−1)
         </button>

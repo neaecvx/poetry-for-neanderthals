@@ -5,7 +5,6 @@ const statusLabel: Record<string, string> = {
   banked3: '+3',
   skipped: '−1',
   bonked: '−1',
-  pushfail: '+1 / −1',
 }
 
 export function ScoreSlate({ cards }: { cards: PoetCard[] }) {
