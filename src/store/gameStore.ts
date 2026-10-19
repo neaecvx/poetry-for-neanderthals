@@ -69,8 +69,8 @@ function buildDeck(deckSide: 'blue' | 'red' | 'mixed'): Card[] {
 export const useGameStore = create<GameStore>((set, get) => ({
   phase: 'SPLASH',
   teams: [
-    { name: 'Team Glad', score: 0, poetIndex: 0 },
-    { name: 'Team Mad', score: 0, poetIndex: 0 },
+    { name: 'Team A', score: 0, poetIndex: 0 },
+    { name: 'Team B', score: 0, poetIndex: 0 },
   ],
   currentTeamIndex: 0,
   turnsPerTeam: 3,

@@ -3,8 +3,8 @@ import { useGameStore } from '../../store/gameStore'
 
 export default function SetupScreen() {
   const setup = useGameStore((s) => s.setup)
-  const [team1, setTeam1] = useState('Team Glad')
-  const [team2, setTeam2] = useState('Team Mad')
+  const [team1, setTeam1] = useState('Team A')
+  const [team2, setTeam2] = useState('Team B')
   const [turnsPerTeam, setTurnsPerTeam] = useState(3)
   const [deckSide, setDeckSide] = useState<'blue' | 'red' | 'mixed'>('blue')
   const [turnSeconds, setTurnSeconds] = useState(90)
