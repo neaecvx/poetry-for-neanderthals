@@ -13,10 +13,10 @@ export default function TurnSummary() {
     if (c.status === 'banked1') return sum + 1
     return sum
   }, 0)
-  const penalties = poetCards.filter(
+  const deductions = poetCards.filter(
     (c) => c.status === 'skipped' || c.status === 'bonked'
   ).length
-  const net = earned - penalties
+  const net = earned - deductions
 
   const statusLabel: Record<string, string> = {
     banked1: '+1 banked',
@@ -28,8 +28,11 @@ export default function TurnSummary() {
   return (
     <div className="screen">
       <h1 className="screen-title">{team.name} Turn Summary</h1>
+      <button style={buttonStyle} onClick={nextTurn}>
+        Next Turn
+      </button>
       <p className="subtitle">
-        This turn: {net >= 0 ? '+' : ''}{net} ({earned} earned − {penalties} penalty{penalties === 1 ? '' : 'ies'}) · {team.name} total: {team.score}
+        This turn: {net >= 0 ? '+' : ''}{net} ({earned} earned − {deductions} deduction{deductions === 1 ? '' : 's'}) · {team.name} total: {team.score}
       </p>
       <div style={{ maxWidth: 'min(800px,90vw)' }}>
         {poetCards.map((c, i) => (
@@ -41,9 +44,6 @@ export default function TurnSummary() {
           </div>
         ))}
       </div>
-      <button style={buttonStyle} onClick={nextTurn}>
-        Next Turn
-      </button>
       <button
         style={restartStyle}
         onClick={() => {
