@@ -1,0 +1,107 @@
+:root {
+  /* Poetry for Neanderthals - Dark Cave Theme */
+  --bg-primary: #0b0f0b;
+  --bg-secondary: #1a2021;
+  --bg-cave: radial-gradient(ellipse at top, #1f2a21 0%, #0b0f0b 70%);
+  --text-primary: #f2f0ec;
+  --text-secondary: #bfb9a3;
+  --accent-fire: #ff5c1d;
+  --accent-fire-light: #ff8a3d;
+  --accent-stone: #8b8576;
+  --accent-bone: #e6ded0;
+  --accent-green: #4d9c5d;
+  --accent-red: #d64533;
+  --accent-blue: #5c8dd6;
+  --shadow-heavy: rgba(0, 0, 0, 0.6) 0 20px 40px -10px;
+  --border-stone: 2px solid #8b8576;
+  --border-bone: 2px solid #e6ded0;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: var(--bg-cave);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: transform 0.1s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:hover {
+  filter: brightness(1.05);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.screen {
+  width: 100%;
+  max-width: 1200px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 2vw, 2rem);
+  gap: clamp(1rem, 3vw, 2rem);
+  text-align: center;
+}
+
+.screen-title {
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 800;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  letter-spacing: -0.02em;
+  color: var(--accent-bone);
+}
+
+.subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  color: var(--text-secondary);
+  max-width: 60ch;
+}
+
+@keyframes bonkFlash {
+  0% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
+@keyframes cardPop {
+  0% { transform: scale(0.92) translateY(10px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
