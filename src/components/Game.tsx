@@ -1,4 +1,5 @@
 import { useGameStore } from '../store/gameStore'
+import Splash from './screens/Splash'
 import SetupScreen from './screens/SetupScreen'
 import TurnIntro from './screens/TurnIntro'
 import GameScreen from './screens/GameScreen'
@@ -9,6 +10,8 @@ export function Game() {
   const phase = useGameStore((s) => s.phase)
 
   switch (phase) {
+    case 'SPLASH':
+      return <Splash />
     case 'SETUP':
       return <SetupScreen />
     case 'TURN_INTRO':

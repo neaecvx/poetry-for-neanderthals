@@ -6,7 +6,7 @@ import green from '../data/green.json'
 import { fisherYates } from '../utils/shuffle'
 import { playYes, playBonk } from '../utils/sfx'
 
-export type Phase = 'SETUP' | 'TURN_INTRO' | 'PLAYING' | 'TURN_SUMMARY' | 'END'
+export type Phase = 'SPLASH' | 'SETUP' | 'TURN_INTRO' | 'PLAYING' | 'TURN_SUMMARY' | 'END'
 
 export interface Team {
   name: string
@@ -39,6 +39,7 @@ export interface GameStore {
     deckSide: 'blue' | 'red' | 'mixed'
     turnSeconds: number
   }) => void
+  dismissSplash: () => void
   startTurn: () => void
   drawNext: () => void
   bank1: () => void
@@ -82,6 +83,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   timerSeconds: 90,
   timerRunning: false,
   turnSeconds: 90,
+  dismissSplash: () => {
+    set({ phase: 'SETUP' })
+  },
   setup: (opts) => {
     const deck = buildDeck(opts.deckSide)
     // load used from localStorage if present
@@ -247,7 +251,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   rematch: () => {
     const deck = buildDeck(get().deckSide)
     set({
-      phase: 'SETUP',
+  phase: 'SPLASH',
       teams: [
         { name: get().teams[0].name, score: 0, poetIndex: 0 },
         { name: get().teams[1].name, score: 0, poetIndex: 0 },
