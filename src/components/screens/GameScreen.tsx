@@ -42,55 +42,51 @@ export default function GameScreen() {
   const settledCards = poetCards.filter((c, i) => c.status !== 'active' && i !== currentCardIndex)
 
   return (
-    <div className="screen" style={{ position: 'relative' }}>
-      {flash && <div style={flashStyle} />}
-      <div style={{ display: 'flex', gap: 'clamp(1rem,4vw,3rem)', flexWrap: 'wrap', justifyContent: 'center' }}>
-        {teams.map((t, i) => (
-          <div
-            key={i}
-            style={{
-              ...scoreChip,
-              opacity: i === currentTeamIndex ? 1 : 0.5,
-              borderColor: i === currentTeamIndex ? 'var(--accent-fire)' : 'var(--border-stone)',
-            }}
-          >
-            <div style={{ fontSize: '0.85rem', opacity: 0.7 }}>
-              {t.name} · turn {Math.min(turnsTaken[i] + 1, turnsPerTeam)}/{turnsPerTeam}
-            </div>
-            <div style={{ fontSize: '1.75rem', fontWeight: 900 }}>{t.score}</div>
-          </div>
-        ))}
-      </div>
-      <div style={{ display: 'flex', gap: 'clamp(0.5rem,2vw,1rem)', flexWrap: 'wrap', justifyContent: 'center' }}>
-        <button style={btnStyle} onClick={bank1}>
-          ✓ 1 point
-        </button>
-        <button style={btnStyle} onClick={bank3}>
-          ✓ 3 points
-        </button>
-        <button style={{ ...btnStyle, borderColor: 'var(--accent-red)' }} onClick={skip}>
-          ⏭ Skip (−1)
-        </button>
-        <button style={bonkBtnStyle} onClick={doBonk}>
-          🦴 NO! (−1)
-        </button>
-      </div>
-      <Timer />
-      <Card key={card.id} card={card} />
-      {settledCards.length > 0 && (
-        <div style={{ width: 'min(600px,90vw)' }}>
-          <div style={{ fontSize: '0.9rem', opacity: 0.6, marginBottom: '0.5rem' }}>
-            This turn's slate
-          </div>
-          <ScoreSlate cards={settledCards} />
+    <div className="screen screen--game">
+      {flash && <div className="bonk-flash" />}
+      <div className="hud">
+        <div className="scoreboard">
+          {teams.map((t, i) => {
+            const active = i === currentTeamIndex
+            const turn = Math.min(turnsTaken[i] + 1, turnsPerTeam)
+            return (
+              <div key={i} className={active ? 'team team--active' : 'team'}>
+                <div className="team__info">
+                  <span className="team__name">{t.name}</span>
+                  <span className="team__turn">
+                    {active && <span className="team__dot" aria-hidden="true" />}
+                    Turn {turn}/{turnsPerTeam}
+                  </span>
+                </div>
+                <span className="team__score">{t.score}</span>
+              </div>
+            )
+          })}
         </div>
-      )}
-      <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center' }}>
-        <button style={endStyle} onClick={endTurn}>
+        <div className="actions">
+          <button className="btn btn--positive" onClick={bank1}>
+            1 point
+          </button>
+          <button className="btn btn--positive" onClick={bank3}>
+            3 points
+          </button>
+          <button className="btn btn--danger" onClick={skip}>
+            Skip −1
+          </button>
+          <button className="btn btn--danger" onClick={doBonk}>
+            NO! −1
+          </button>
+        </div>
+        <Timer />
+      </div>
+      <Card key={card.id} card={card} />
+      {settledCards.length > 0 && <ScoreSlate cards={settledCards} />}
+      <div className="footer-links">
+        <button className="btn btn--ghost" onClick={endTurn}>
           End turn early
         </button>
         <button
-          style={endStyle}
+          className="btn btn--ghost"
           onClick={() => {
             if (window.confirm('Restart the game? Current scores will be lost.')) rematch()
           }}
@@ -100,49 +96,4 @@ export default function GameScreen() {
       </div>
     </div>
   )
-}
-
-const flashStyle: React.CSSProperties = {
-  position: 'fixed',
-  inset: 0,
-  background: 'rgba(214, 69, 51, 0.45)',
-  zIndex: 100,
-  animation: 'bonkFlash 0.45s ease-out forwards',
-  pointerEvents: 'none',
-}
-
-const scoreChip: React.CSSProperties = {
-  padding: '0.5rem 1.25rem',
-  background: 'rgba(255,255,255,0.05)',
-  borderRadius: 'var(--radius-lg)',
-  border: '2px solid var(--border-stone)',
-  minWidth: '140px',
-}
-
-const btnStyle: React.CSSProperties = {
-  padding: '0.75rem 1.25rem',
-  borderRadius: '12px',
-  background: 'var(--bg-secondary)',
-  color: 'var(--text-primary)',
-  border: '2px solid var(--accent-green)',
-  fontSize: 'clamp(0.9rem,2vw,1.05rem)',
-  fontWeight: 700,
-}
-
-const bonkBtnStyle: React.CSSProperties = {
-  padding: '0.75rem 1.25rem',
-  borderRadius: '12px',
-  background: 'linear-gradient(135deg, #8b4513, #654321)',
-  color: 'var(--accent-bone)',
-  border: '3px solid #d4af37',
-  fontSize: 'clamp(0.9rem,2vw,1.05rem)',
-  fontWeight: 900,
-  boxShadow: '0 8px 24px rgba(0,0,0,0.6)',
-}
-
-const endStyle: React.CSSProperties = {
-  background: 'none',
-  color: 'var(--text-secondary)',
-  fontSize: '0.9rem',
-  textDecoration: 'underline',
 }

@@ -1,39 +1,33 @@
 import type { PoetCard } from '../store/gameStore'
 
-export function Card({ card }: { card: PoetCard }) {
+function highlight(easy: string, hard: string) {
+  const index = hard.toLowerCase().indexOf(easy.toLowerCase())
+  if (index === -1) return hard
   return (
-    <div style={cardStyle}>
-      <div style={{ opacity: 0.6, fontSize: 'clamp(0.9rem,2vw,1.1rem)' }}>Easy (1 pt)</div>
-      <div style={easyStyle}>{card.easy}</div>
-      <div style={{ margin: '1rem 0', opacity: 0.4 }}>then</div>
-      <div style={{ opacity: 0.6, fontSize: 'clamp(0.9rem,2vw,1.1rem)' }}>
-        Hard (3 pts)
-      </div>
-      <div style={hardStyle}>{card.hard}</div>
-    </div>
+    <>
+      {hard.slice(0, index)}
+      <span className="hl">{hard.slice(index, index + easy.length)}</span>
+      {hard.slice(index + easy.length)}
+    </>
   )
 }
 
-const cardStyle: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.05)',
-  border: 'var(--border-bone)',
-  borderRadius: 'var(--radius-xl)',
-  padding: 'clamp(1.5rem,4vw,3rem)',
-  boxShadow: 'var(--shadow-heavy)',
-  maxWidth: 'min(800px,90vw)',
-  animation: 'cardPop 0.25s ease-out',
-}
-
-const easyStyle: React.CSSProperties = {
-  fontSize: 'clamp(1.75rem,5vw,3rem)',
-  fontWeight: 800,
-  color: 'var(--accent-blue)',
-  textShadow: '0 4px 20px rgba(0,0,0,0.5)',
-}
-
-const hardStyle: React.CSSProperties = {
-  fontSize: 'clamp(2rem,6vw,4rem)',
-  fontWeight: 900,
-  color: 'var(--accent-fire-light)',
-  textShadow: '0 4px 20px rgba(0,0,0,0.5)',
+export function Card({ card }: { card: PoetCard }) {
+  return (
+    <div className="card">
+      <div className="card__tier">
+        <span className="chip chip--easy">
+          Easy <span className="chip__pts">1 pt</span>
+        </span>
+        <div className="card__answer card__answer--easy">{card.easy}</div>
+      </div>
+      <div className="card__divider">then</div>
+      <div className="card__tier">
+        <span className="chip chip--hard">
+          Hard <span className="chip__pts">3 pts</span>
+        </span>
+        <div className="card__answer card__answer--hard">{highlight(card.easy, card.hard)}</div>
+      </div>
+    </div>
+  )
 }

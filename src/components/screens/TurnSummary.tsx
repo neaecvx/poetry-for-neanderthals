@@ -1,5 +1,17 @@
 import { useGameStore } from '../../store/gameStore'
 
+function points(status: string) {
+  if (status === 'banked3') return 3
+  if (status === 'banked1') return 1
+  if (status === 'skipped' || status === 'bonked') return -1
+  return 0
+}
+
+function signed(value: number) {
+  if (value === 0) return '0'
+  return `${value > 0 ? '+' : '−'}${Math.abs(value)}`
+}
+
 export default function TurnSummary() {
   const teams = useGameStore((s) => s.teams)
   const currentTeamIndex = useGameStore((s) => s.currentTeamIndex)
@@ -18,34 +30,44 @@ export default function TurnSummary() {
   ).length
   const net = earned - deductions
 
-  const statusLabel: Record<string, string> = {
-    banked1: '+1 banked',
-    banked3: '+3 banked',
-    skipped: '−1',
-    bonked: '−1',
-  }
-
   return (
     <div className="screen">
-      <h1 className="screen-title">{team.name} Turn Summary</h1>
-      <button style={buttonStyle} onClick={nextTurn}>
-        Next Turn
-      </button>
-      <p className="subtitle">
-        This turn: {net >= 0 ? '+' : ''}{net} ({earned} earned − {deductions} deduction{deductions === 1 ? '' : 's'}) · {team.name} total: {team.score}
-      </p>
-      <div style={{ maxWidth: 'min(800px,90vw)' }}>
-        {poetCards.map((c, i) => (
-          <div key={i} style={rowStyle}>
-            <div>
-              <strong>{c.easy}</strong> → <strong>{c.hard}</strong>
-            </div>
-            <div>{statusLabel[c.status] ?? c.status}</div>
-          </div>
-        ))}
+      <div className="stack">
+        <p className="eyebrow">Turn complete</p>
+        <h1 className="screen-title">{team.name} summary</h1>
+        <div className="stack stack--narrow">
+          <button className="btn btn--primary btn--block" onClick={nextTurn}>
+            Next Turn
+          </button>
+        </div>
+        <p className="summary-line">
+          This turn <strong>{signed(net)}</strong> ({earned} earned − {deductions} deduction
+          {deductions === 1 ? '' : 's'}) · Total <strong>{team.score}</strong>
+        </p>
+      </div>
+      <div className="slate">
+        <div className="slate__head">
+          <span className="slate__title">Cards</span>
+        </div>
+        <ul className="slate__list">
+          {poetCards.map((c, i) => {
+            const value = points(c.status)
+            const tone = value > 0 ? 'slate__pts--pos' : value < 0 ? 'slate__pts--neg' : ''
+            return (
+              <li key={i} className="slate__row">
+                <span className="slate__answer">
+                  <strong>{c.easy}</strong> → {c.hard}
+                </span>
+                <span className={`slate__pts ${tone}`}>
+                  {value === 0 ? '—' : signed(value)}
+                </span>
+              </li>
+            )
+          })}
+        </ul>
       </div>
       <button
-        style={restartStyle}
+        className="btn btn--ghost"
         onClick={() => {
           if (window.confirm('Restart the game? Current scores will be lost.')) rematch()
         }}
@@ -54,29 +76,4 @@ export default function TurnSummary() {
       </button>
     </div>
   )
-}
-
-const rowStyle: React.CSSProperties = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  padding: '0.75rem 1rem',
-  margin: '0.25rem 0',
-  borderRadius: '12px',
-  background: 'rgba(255,255,255,0.05)',
-  border: '1px solid rgba(255,255,255,0.1)',
-}
-const buttonStyle: React.CSSProperties = {
-  padding: '0.75rem 1rem',
-  borderRadius: '12px',
-  background: 'linear-gradient(135deg, var(--accent-fire), var(--accent-fire-light))',
-  color: 'var(--text-primary)',
-  fontSize: '1.125rem',
-  fontWeight: 700,
-}
-const restartStyle: React.CSSProperties = {
-  background: 'none',
-  color: 'var(--text-secondary)',
-  fontSize: '0.9rem',
-  textDecoration: 'underline',
-  marginTop: '1rem',
 }
