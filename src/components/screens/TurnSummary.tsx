@@ -1,4 +1,5 @@
 import { useGameStore } from '../../store/gameStore'
+import { Masthead } from '../Masthead'
 
 function points(status: string) {
   if (status === 'banked3') return 3
@@ -9,6 +10,11 @@ function points(status: string) {
 
 function signed(value: number) {
   if (value === 0) return '0'
+  return `${value > 0 ? '+' : '−'}${Math.abs(value)}`
+}
+
+function signedPoints(value: number) {
+  if (value === 0) return '—'
   return `${value > 0 ? '+' : '−'}${Math.abs(value)}`
 }
 
@@ -31,49 +37,65 @@ export default function TurnSummary() {
   const net = earned - deductions
 
   return (
-    <div className="screen">
-      <div className="stack">
-        <p className="eyebrow">Turn complete</p>
-        <h1 className="screen-title">{team.name} summary</h1>
-        <div className="stack stack--narrow">
-          <button className="btn btn--primary btn--block" onClick={nextTurn}>
-            Next Turn
+    <div className="page">
+      <Masthead meta="Scorecard" />
+      <div className="center">
+        <div className="sheet summary">
+          <div className="summary__head">
+            <div>
+              <p className="kicker kicker--ink">Turn complete</p>
+              <h1 className="display display--ink summary__title">{team.name}</h1>
+            </div>
+            <button className="btn btn--ink btn--sm" onClick={nextTurn}>
+              Next turn
+            </button>
+          </div>
+
+          <div className="summary__figures">
+            <div className="figure">
+              <span className="figure__label">This turn</span>
+              <span className="figure__value figure__value--accent num">{signed(net)}</span>
+            </div>
+            <div className="figure">
+              <span className="figure__label">Team total</span>
+              <span className="figure__value num">{team.score}</span>
+            </div>
+          </div>
+
+          <p className="summary__breakdown">
+            {earned} earned · {deductions} deduction{deductions === 1 ? '' : 's'}
+          </p>
+
+          <ul className="summary__list">
+            {poetCards.map((c, i) => {
+              const value = points(c.status)
+              const tone =
+                value > 0
+                  ? 'summary__pts--pos'
+                  : value < 0
+                    ? 'summary__pts--neg'
+                    : ''
+              return (
+                <li key={i} className="summary__row">
+                  <span className="summary__word">
+                    <strong>{c.easy}</strong> → {c.hard}
+                  </span>
+                  <span className={`summary__pts num ${tone}`}>{signedPoints(value)}</span>
+                </li>
+              )
+            })}
+          </ul>
+
+          <button
+            className="ghost ghost--ink summary__restart"
+            onClick={() => {
+              if (window.confirm('Restart the game? Current scores will be lost.')) rematch()
+            }}
+          >
+            Restart game
           </button>
         </div>
-        <p className="summary-line">
-          This turn <strong>{signed(net)}</strong> ({earned} earned − {deductions} deduction
-          {deductions === 1 ? '' : 's'}) · Total <strong>{team.score}</strong>
-        </p>
       </div>
-      <div className="slate">
-        <div className="slate__head">
-          <span className="slate__title">Cards</span>
-        </div>
-        <ul className="slate__list">
-          {poetCards.map((c, i) => {
-            const value = points(c.status)
-            const tone = value > 0 ? 'slate__pts--pos' : value < 0 ? 'slate__pts--neg' : ''
-            return (
-              <li key={i} className="slate__row">
-                <span className="slate__answer">
-                  <strong>{c.easy}</strong> → {c.hard}
-                </span>
-                <span className={`slate__pts ${tone}`}>
-                  {value === 0 ? '—' : signed(value)}
-                </span>
-              </li>
-            )
-          })}
-        </ul>
-      </div>
-      <button
-        className="btn btn--ghost"
-        onClick={() => {
-          if (window.confirm('Restart the game? Current scores will be lost.')) rematch()
-        }}
-      >
-        Restart game
-      </button>
     </div>
   )
 }

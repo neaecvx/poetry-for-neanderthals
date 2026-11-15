@@ -1,14 +1,22 @@
 import { useEffect, useState } from 'react'
 import { useGameStore } from '../../store/gameStore'
+import { Masthead } from '../Masthead'
 import { Timer } from '../Timer'
 import { Card } from '../Card'
 import { ScoreSlate } from '../ScoreSlate'
+
+const deckLabels: Record<string, string> = {
+  blue: 'Blue deck',
+  red: 'Red deck',
+  mixed: 'Mixed deck',
+}
 
 export default function GameScreen() {
   const teams = useGameStore((s) => s.teams)
   const currentTeamIndex = useGameStore((s) => s.currentTeamIndex)
   const turnsTaken = useGameStore((s) => s.turnsTaken)
   const turnsPerTeam = useGameStore((s) => s.turnsPerTeam)
+  const deckSide = useGameStore((s) => s.deckSide)
   const poetCards = useGameStore((s) => s.poetCards)
   const currentCardIndex = useGameStore((s) => s.currentCardIndex)
   const bank1 = useGameStore((s) => s.bank1)
@@ -42,58 +50,70 @@ export default function GameScreen() {
   const settledCards = poetCards.filter((c, i) => c.status !== 'active' && i !== currentCardIndex)
 
   return (
-    <div className="screen screen--game">
+    <div className="page page--game">
       {flash && <div className="bonk-flash" />}
-      <div className="hud">
-        <div className="scoreboard">
-          {teams.map((t, i) => {
-            const active = i === currentTeamIndex
-            const turn = Math.min(turnsTaken[i] + 1, turnsPerTeam)
-            return (
-              <div key={i} className={active ? 'team team--active' : 'team'}>
-                <div className="team__info">
-                  <span className="team__name">{t.name}</span>
-                  <span className="team__turn">
-                    {active && <span className="team__dot" aria-hidden="true" />}
-                    Turn {turn}/{turnsPerTeam}
-                  </span>
-                </div>
-                <span className="team__score">{t.score}</span>
-              </div>
-            )
-          })}
-        </div>
-        <div className="actions">
-          <button className="btn btn--positive" onClick={bank1}>
-            1 point
-          </button>
-          <button className="btn btn--positive" onClick={bank3}>
-            3 points
-          </button>
-          <button className="btn btn--danger" onClick={skip}>
-            Skip −1
-          </button>
-          <button className="btn btn--danger" onClick={doBonk}>
-            NO! −1
-          </button>
-        </div>
+      <Masthead meta={deckLabels[deckSide]} />
+
+      <section className="scoreboard" aria-label="Scoreboard">
+        {teams.map((t, i) => {
+          const active = i === currentTeamIndex
+          const turn = Math.min(turnsTaken[i] + 1, turnsPerTeam)
+          return (
+            <div key={i} className={active ? 'team team--active' : 'team'}>
+              <span className="team__name">
+                {active && <span className="team__mark" aria-hidden="true" />}
+                {t.name}
+              </span>
+              <span className="team__score num">{t.score}</span>
+              <span className="team__turn">
+                Turn {turn} of {turnsPerTeam}
+              </span>
+            </div>
+          )
+        })}
+      </section>
+
+      <main className="stage">
+        <Card key={card.id} card={card} />
         <Timer />
-      </div>
-      <Card key={card.id} card={card} />
+      </main>
+
+      <section className="console" aria-label="Scoring controls">
+        <div className="award-group">
+          <button className="award" onClick={bank1}>
+            <span className="award__num num">1</span>
+            <span className="award__text">point</span>
+          </button>
+          <button className="award award--three" onClick={bank3}>
+            <span className="award__num num">3</span>
+            <span className="award__text">points</span>
+          </button>
+        </div>
+        <div className="penalty-group">
+          <button className="penalty" onClick={skip}>
+            Skip <span className="penalty__pts num">−1</span>
+          </button>
+          <button className="penalty penalty--no" onClick={doBonk}>
+            NO! <span className="penalty__pts num">−1</span>
+          </button>
+        </div>
+      </section>
+
       {settledCards.length > 0 && <ScoreSlate cards={settledCards} />}
-      <div className="footer-links">
-        <button className="btn btn--ghost" onClick={endTurn}>
+
+      <footer className="game__footer">
+        <button className="ghost" onClick={endTurn}>
           End turn early
         </button>
         <button
-          className="btn btn--ghost"
+          className="ghost"
           onClick={() => {
             if (window.confirm('Restart the game? Current scores will be lost.')) rematch()
           }}
         >
           Restart game
         </button>
-      </div>
+      </footer>
     </div>
   )
 }

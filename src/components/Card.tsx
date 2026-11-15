@@ -14,19 +14,23 @@ function highlight(easy: string, hard: string) {
 
 export function Card({ card }: { card: PoetCard }) {
   return (
-    <div className="card">
-      <div className="card__tier">
-        <span className="chip chip--easy">
-          Easy <span className="chip__pts">1 pt</span>
-        </span>
-        <div className="card__answer card__answer--easy">{card.easy}</div>
+    <div className="question">
+      <div className="tier">
+        <span className="tier__num num">1</span>
+        <div className="tier__body">
+          <span className="tier__label">One point</span>
+          <span className="tier__word tier__word--easy">{card.easy}</span>
+        </div>
       </div>
-      <div className="card__divider">then</div>
-      <div className="card__tier">
-        <span className="chip chip--hard">
-          Hard <span className="chip__pts">3 pts</span>
-        </span>
-        <div className="card__answer card__answer--hard">{highlight(card.easy, card.hard)}</div>
+      <div className="tier-divider">
+        <span className="tier-divider__label">then</span>
+      </div>
+      <div className="tier">
+        <span className="tier__num num">3</span>
+        <div className="tier__body">
+          <span className="tier__label">Three points</span>
+          <span className="tier__word tier__word--hard">{highlight(card.easy, card.hard)}</span>
+        </div>
       </div>
     </div>
   )

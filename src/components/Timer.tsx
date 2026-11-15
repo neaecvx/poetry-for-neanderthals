@@ -36,10 +36,7 @@ export function Timer() {
 
   return (
     <div className={`timer${state}`}>
-      <div className="timer__head">
-        <span className="timer__label">Time</span>
-        <span className="timer__value">{formatTime(seconds)}</span>
-      </div>
+      <span className="timer__label">Time</span>
       <div
         className="timer__track"
         role="progressbar"
@@ -50,6 +47,7 @@ export function Timer() {
       >
         <div className="timer__fill" style={{ width: `${pct}%` }} />
       </div>
+      <span className="timer__value num">{formatTime(seconds)}</span>
     </div>
   )
 }

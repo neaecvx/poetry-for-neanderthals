@@ -7,7 +7,7 @@ function points(status: PoetCard['status']) {
   return 0
 }
 
-function formatPoints(value: number) {
+function signed(value: number) {
   if (value === 0) return '—'
   return `${value > 0 ? '+' : '−'}${Math.abs(value)}`
 }
@@ -16,10 +16,10 @@ export function ScoreSlate({ cards }: { cards: PoetCard[] }) {
   const net = cards.reduce((sum, c) => sum + points(c.status), 0)
 
   return (
-    <div className="slate">
+    <section className="slate" aria-label="This turn's cards">
       <div className="slate__head">
         <span className="slate__title">This turn</span>
-        <span className="slate__total">{formatPoints(net)}</span>
+        <span className="slate__total num">{signed(net)}</span>
       </div>
       <ul className="slate__list">
         {cards.map((c, i) => {
@@ -28,11 +28,11 @@ export function ScoreSlate({ cards }: { cards: PoetCard[] }) {
           return (
             <li key={i} className="slate__row">
               <span className="slate__answer">{c.easy}</span>
-              <span className={`slate__pts ${tone}`}>{formatPoints(value)}</span>
+              <span className={`slate__pts num ${tone}`}>{signed(value)}</span>
             </li>
           )
         })}
       </ul>
-    </div>
+    </section>
   )
 }
